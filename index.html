@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Page Title</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif !important;
+        }
+
+        .page-title{
+            line-height: 10px;
+            margin: 16px;
+            text-align: center;
+        }
+        .card-wrap {
+            display: flex;
+            margin: 2% 8%;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 20px;
+            margin: 8px 0;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #2196F3;
+            border: none;
+            color: white;
+            padding: 8px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+            width: 260px;
+            min-width: 200px;
+            min-height: 380px;
+            margin: 0% 2%;
+        }
+
+        .card-title{
+            margin: 10px;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+        }
+
+        .container {
+            padding: 2px 16px;
+            text-align: center;
+        }
+
+        #printArea {
+            display: flex;
+        }
+
+        .print-btn-wrap {
+            text-align: center;
+        }
+
+        .print-btn {
+            width: 250px;
+            height: 40px;
+            background: #8BC34A;
+        }
+
+        .item {
+            width: 100px;
+            height: 25px;
+            background: #FF9800;
+            color: #ffffff;
+            text-align: center;
+            font-size: 18px;
+            padding: 15px;
+            margin: 15px;
+        }
+
+        .success-icon {
+            margin-top: 10px;
+            color: #4CAF50;
+            border: 2px solid #4CAF50;
+            border-radius: 50%;
+            padding: 1%;
+            font-weight: bold;
+        }
+
+        .note-section {
+            font-size: 13px;
+            line-height: 10px;
+            color: #ada5a5;
+        }
+
+        #new-item-success {
+            display: none;
+        }
+
+        #begining-item-success {
+            display: none;
+        }
+
+        #end-item-success {
+            display: none;
+        }
+
+        #index-item-success {
+            display: none;
+        }
+
+        #warning-wrap {
+            display: none;
+            margin-top: 10px;
+        }
+
+        .warning-note {
+            margin-top: 25px;
+            color: rgb(255, 49, 49);
+            text-align: center;
+        }
+        .footer-section {
+            float: right;
+            margin-top: 60px;
+            font-size: 12px;
+            color: #607D8B;
+        }
+    </style>
+    <script>
+        class Node {
+            constructor(data, next) {
+                this.data = data;
+                this.next = next;
+            }
+        }
+
+        class LinkedList {
+            constructor() {
+                this.head = null;
+                this.size = 0;
+            }
+
+            insertElement(data) {
+                var node = new Node(data);
+                var current;
+
+                if (!this.head) {
+                    this.head = node;
+                }
+                else {
+                    current = this.head;
+                    while (current.next) {
+                        current = current.next;
+                    }
+                    current.next = node;
+                }
+                this.size++;
+            }
+
+            insertAtFirst(data) {
+                this.head = new Node(data, this.head);
+                this.size++;
+            }
+            insertAtLast(data) {
+
+                var node = new Node(data);
+                var current;
+
+                if (!this.head) {
+                    this.head = node;
+                }
+                else {
+                    current = this.head;
+
+                    while (current.next) {
+                        current = current.next;
+                    }
+                    current.next = node;
+                }
+                this.size++;
+            }
+
+            insertAtIndex(data, index) {
+                if (index > 0 && index > this.size) {
+                    return;
+                }
+                if (index === 0) {
+                    this.head = new Node(data, this.head);
+                    return;
+                }
+
+                const node = new Node(data);
+                var current, previous;
+
+                current = this.head;
+                var count = 0;
+
+                while (count < index) {
+                    previous = current;
+                    count++;
+                    current = current.next;
+                }
+                node.next = current;
+                previous.next = node;
+
+                this.size++;
+            }
+            printList() {
+                var current = this.head;
+                var str = '';
+                if (!this.head) {
+                    //Show No List Message
+                    document.getElementById('warning-wrap').style.display = 'block';
+                }
+                else {
+                    document.getElementById('warning-wrap').style.display = 'none';
+                }
+
+                while (current) {
+                    console.log(current.data);
+                    str = str + '<span><div class="item">' + current.data + '</div></span>';
+                    current = current.next;
+
+                }
+                return str;
+            }
+        }
+
+        const ll = new LinkedList();
+
+    </script>
+</head>
+
+<body>
+    <div >
+        <h2 class="page-title">Linked List with JavaScript</h2>
+    </div>
+    <div class="card-wrap">
+
+        <div class="card">
+            <div class="container">
+                <div>
+                    <h4 class="card-title">Add a new item to the Linked List</h4>
+                </div>
+                <div>
+                    <input id="InsertElement" type="text" placeholder="Monday">
+                    <button onclick="userInsertElement()">Add</button>
+                </div>
+                <div id="new-item-success" class="note-section">
+                    <i class="material-icons success-icon">done</i>
+                </div>
+                <div class="note-section">
+                    <p>Example : Add following 4 Items</p>
+                    <p>Monday</p>
+                    <p>Tuesday</p>
+                    <p>Wednesday</p>
+                    <p>Thursday</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="container">
+                <div>
+                    <h4 class="card-title">Add a new item at the begining of the List</h4>
+                </div>
+                <div>
+                    <input id="InsertElementFirst" type="text" placeholder="Sunday">
+                    <button onclick="userinsertAtFirst()">Add at First</button>
+                </div>
+                <div id="begining-item-success" class="note-section">
+                    <i class="material-icons success-icon">done</i>
+                </div>
+                <div class="note-section">
+                    <p>Sunday is the first Day of the Week!</p>
+                    <p><i class="material-icons">insert_emoticon</i></p>
+                    <p>Example : Add Sunday</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="container">
+                <div>
+                    <h4 class="card-title">Add a new item at the end of the List</h4>
+                </div>
+                <div>
+                    <input id="InsertElementLast" type="text" placeholder="Saturday">
+                    <button onclick="userinsertAtLast()">Add at Last</button>
+                </div>
+                <div id="end-item-success">
+                    <i class="material-icons success-icon">done</i>
+                </div>
+                <div class="note-section">
+                    <p>Sunday is the last Day of the Week !</p>
+                    <p><i class="material-icons">insert_emoticon</i></p>
+                    <p>Example : Add Saturday</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="container">
+                <div>
+                    <h4 class="card-title">Add a new item to the specfic place</h4>
+                </div>
+                <div>
+                    <input id="index" type="number" placeholder="Index">
+                    <input id="InsertElementAtIndex" type="text" placeholder="Friday">
+                    <button onclick="userinsertAtIndex()">Add at Index</button>
+                </div>
+                <div id="index-item-success" class="note-section">
+                    <i class="material-icons success-icon">done</i>
+                </div>
+                <div class="note-section">
+                    <p>Example : Add Friday</p>
+                    <p>Friday is the 6th Day of the week</p>
+                    <p>Index Starts from 0 !</p>
+                    <p>So, Index = 5</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="print-btn-wrap">
+        <button class="print-btn" onclick="userPrintList()">Preview Linked List</button>
+        <div id="printArea"></div>
+        <div id='warning-wrap'><span class='warning-note'>Empty Linked List ! Please Add Items </span></div>
+    </div>
+
+    <div class="footer-section">
+        <p>&copy; 2020 Designed and Developed By Roshan Jayathunga<p></p>
+    </div>
+
+</body>
+<script>
+    function userInsertElement() {
+        var x = document.getElementById("InsertElement").value;
+        ll.insertElement(x);
+        document.getElementById("InsertElement").value = '';
+        document.getElementById('new-item-success').style.display = 'block';
+        hideNotification("new-item-success");
+    }
+
+    function userinsertAtFirst() {
+        var x = document.getElementById("InsertElementFirst").value;
+        ll.insertAtFirst(x);
+        document.getElementById("InsertElementFirst").value = '';
+        document.getElementById('begining-item-success').style.display = 'block';
+        hideNotification("begining-item-success");
+    }
+
+    function userinsertAtLast() {
+        var x = document.getElementById("InsertElementLast").value;
+        ll.insertAtLast(x);
+        document.getElementById("InsertElementLast").value = '';
+        document.getElementById('end-item-success').style.display = 'block';
+        hideNotification("end-item-success");
+
+    }
+
+    function userinsertAtIndex() {
+        var a = document.getElementById("index").value;
+        var x = document.getElementById("InsertElementAtIndex").value;
+        ll.insertAtIndex(x, a);
+        document.getElementById("InsertElementAtIndex").value = '';
+        document.getElementById("index").value = '';
+        document.getElementById('index-item-success').style.display = 'block';
+        hideNotification("index-item-success");
+
+    }
+
+    function userPrintList() {
+        var x = ll.printList();
+        document.getElementById("printArea").innerHTML = x;
+        hideNotification("warning-wrap");
+    }
+
+    //Hide Notification after 2 Secconds
+    function hideNotification(id) {
+        setTimeout(function () {
+            document.getElementById(id).style.display = 'none'
+        }, 2000);
+    }
+
+
+
+</script>
+
+</html>
